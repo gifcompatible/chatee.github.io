@@ -1,3 +1,4 @@
 class Message
-  constructor: (content) ->
+  constructor: (content, timestamp) ->
     @content = content
+    @timestamp = new Date(timestamp)

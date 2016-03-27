@@ -2,6 +2,10 @@ var displayChatMessage, myDataRef;
 
 myDataRef = new Firebase('https://q842lbplhsw.firebaseio-demo.com/');
 
+$(document).ready(function() {
+  return $("time.timeago").timeago;
+});
+
 $('#messageInput').keypress(function(e) {
   var name, text, time;
   if (e.keyCode === 13) {

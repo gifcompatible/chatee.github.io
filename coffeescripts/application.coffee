@@ -1,5 +1,8 @@
 myDataRef = new Firebase('https://q842lbplhsw.firebaseio-demo.com/')
 
+$(document).ready ->
+  $("time.timeago").timeago
+
 $('#messageInput').keypress (e) ->
   if e.keyCode == 13
     name = $('#nameInput').val()

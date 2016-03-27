@@ -2,9 +2,12 @@ describe('Message', function() {
   var message;
   message = null;
   beforeEach(function() {
-    return message = new Message('hello everypony!');
+    return message = new Message('hello everypony!', Date.now());
   });
-  return it('has content', function() {
+  it('has content', function() {
     return expect(message.content).toEqual('hello everypony!');
+  });
+  return it('has a timestamp', function() {
+    return expect(message.timestamp).toEqual(jasmine.any(Date));
   });
 });
