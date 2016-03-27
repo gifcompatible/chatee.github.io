@@ -1,6 +1,8 @@
-var displayChatMessage, myDataRef;
+var displayChatMessage, messages, myDataRef;
 
 myDataRef = new Firebase('https://q842lbplhsw.firebaseio-demo.com/');
+
+messages = [];
 
 $(document).ready(function() {
   return $("time.timeago").timeago;
@@ -14,7 +16,8 @@ $('#messageInput').keypress(function(e) {
     time = Date.now();
     myDataRef.push({
       name: name,
-      text: text
+      text: text,
+      time: time
     });
     return $('#messageInput').val('');
   }
@@ -24,7 +27,7 @@ myDataRef.on('child_added', function(snapshot) {
   var message, user;
   message = snapshot.val();
   user = new User(message.name);
-  message = new Message(message.text);
+  message = new Message(message.text, message.time);
   return displayChatMessage(user, message);
 });
 
