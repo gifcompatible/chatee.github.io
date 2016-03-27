@@ -12,7 +12,9 @@ $(document).ready(function() {
     if (e.keyCode === 13) {
       text = $('#nameInput').val();
       user = new User(text);
-      return $('#nameInput').hide();
+      $('#nameInput').hide();
+      $('#messageInput').show();
+      return displayChatMessage(messages);
     }
   });
   $('#messageInput').keypress(function(e) {
@@ -29,14 +31,13 @@ $(document).ready(function() {
     }
   });
   myDataRef.on('child_added', function(snapshot) {
-    debugger;
     var message, newUser;
-    message = snapshot.val();
-    newUser = new User(message.name);
+    snapshot.val();
+    newUser = new User(snapshot.val().name);
     if (newUser.fullName === user.fullName) {
-      newUser = User;
+      newUser = user;
     }
-    message = new Message(message.text, message.time, newUser);
+    message = new Message(snapshot.val().text, snapshot.val().time, newUser);
     messages.push(message);
     messages.sort(function(a, b) {
       if (a.timestamp > b.timestamp) {
@@ -52,7 +53,13 @@ $(document).ready(function() {
   return displayChatMessage = function(messages) {
     $('#messagesDiv').text('');
     messages.forEach(function(message) {
-      return $('<div/>').text(message.content).prepend($('<em/>').text(" " + message.user.fullName + ": ")).prepend($('<time/>').attr('datetime', message.timestamp.toISOString()).text(message.timestamp.toTimeString()).addClass('timeago')).appendTo($('#messagesDiv'));
+      var name;
+      if (message.user.fullName === user.fullName) {
+        name = 'You';
+      } else {
+        name = message.user.fullName;
+      }
+      return $('<div/>').text(message.content).prepend($('<em/>').text(name + ": ")).prepend($('<time/>').attr('datetime', message.timestamp.toISOString()).text(message.timestamp.toTimeString()).addClass('timeago')).appendTo($('#messagesDiv'));
     });
     return $("time.timeago").timeago();
   };

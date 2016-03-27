@@ -15,3 +15,7 @@
 .timeago {
   color: lightgrey;
 }
+
+#messageInput {
+  display: none;
+}

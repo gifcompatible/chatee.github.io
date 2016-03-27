@@ -10,6 +10,8 @@ $(document).ready ->
       text = $('#nameInput').val()
       user = new User(text)
       $('#nameInput').hide()
+      $('#messageInput').show()
+      displayChatMessage messages
 
   $('#messageInput').keypress (e) ->
     if e.keyCode == 13
@@ -21,12 +23,11 @@ $(document).ready ->
 
 
   myDataRef.on 'child_added', (snapshot) ->
-    debugger
-    message = snapshot.val()
-    newUser = new User(message.name)
+    snapshot.val()
+    newUser = new User(snapshot.val().name)
     if newUser.fullName == user.fullName
-      newUser = User
-    message = new Message(message.text, message.time, newUser)
+      newUser = user
+    message = new Message(snapshot.val().text, snapshot.val().time, newUser)
     messages.push message
     messages.sort (a,b) ->
       if a.timestamp > b.timestamp
@@ -41,8 +42,12 @@ $(document).ready ->
   displayChatMessage = (messages) ->
     $('#messagesDiv').text('')
     messages.forEach (message) ->
+      if message.user.fullName == user.fullName
+        name = 'You'
+      else
+        name = message.user.fullName
       $('<div/>').text(message.content).prepend(
-        $('<em/>').text(" #{message.user.fullName}: ")
+        $('<em/>').text("#{name}: ")
       ).prepend(
         $('<time/>').attr('datetime', message.timestamp.toISOString()).text( message.timestamp.toTimeString()).addClass('timeago')
       ).appendTo($('#messagesDiv'))
