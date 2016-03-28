@@ -6,7 +6,8 @@
  */
 
 html {
-  font-family: sans-serif; /* 1 */
+  font-family: "Helvetica Neue"; /* 1 */
+  font-size: 20px;
   -ms-text-size-adjust: 100%; /* 2 */
   -webkit-text-size-adjust: 100%; /* 2 */
 }
@@ -147,10 +148,10 @@ dfn {
  * `article` contexts in Chrome, Firefox, and Safari.
  */
 
-h1 {
+/*h1 {
   font-size: 2em;
   margin: 0.67em 0;
-}
+}*/
 
 /**
  * Add the correct background and color in IE 9-.
