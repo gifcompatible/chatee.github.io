@@ -11,7 +11,7 @@ $(document).ready ->
       user = new User(text)
       $('#nameInput').hide()
       $('#messageInput').show()
-      displayChatMessage messages
+      displayChatMessages messages
 
   $('#messageInput').keypress (e) ->
     if e.keyCode == 13
@@ -36,21 +36,25 @@ $(document).ready ->
         return -1
       else
         return 0
-    displayChatMessage messages
+    displayChatMessages messages
 
 
-  displayChatMessage = (messages) ->
+  displayChatMessages = (messages) ->
     $('#messagesDiv').text('')
-    messages.forEach (message) ->
+    messages.forEach (message, index) ->
       if message.user.fullName == user.fullName
         name = 'You'
       else
         name = message.user.fullName
-      $('<div/>').text(message.content).prepend(
-        $('<em/>').text("#{name}: ")
-      ).prepend(
-        $('<time/>').attr('datetime', message.timestamp.toISOString()).text( message.timestamp.toTimeString()).addClass('timeago')
-      ).appendTo($('#messagesDiv'))
-    # $('#messagesDiv')[0].scrollTop =
-    # $('#messagesDiv')[0].scrollHeight
+
+      $('<div/>').attr('id', "message#{index}").appendTo($('#messagesDiv'))
+      messageDiv = $("#message#{index}")
+      messageDiv.addClass('message')
+      if name == 'You'
+        messageDiv.addClass('you')
+
+      messageDiv.text "#{message.content} "
+      messageDiv.prepend $('<em/>').text("#{name}: ")
+      messageDiv.append $('<time/>').attr('datetime', message.timestamp.toISOString()).text(message.timestamp.toTimeString()).addClass('timeago')
+
     $("time.timeago").timeago()

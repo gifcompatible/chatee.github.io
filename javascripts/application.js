@@ -5,7 +5,7 @@ myDataRef = new Firebase('https://q842lbplhsw.firebaseio-demo.com/');
 messages = [];
 
 $(document).ready(function() {
-  var displayChatMessage, user;
+  var displayChatMessages, user;
   user = new User();
   $('#userInput').keypress(function(e) {
     var text;
@@ -14,7 +14,7 @@ $(document).ready(function() {
       user = new User(text);
       $('#nameInput').hide();
       $('#messageInput').show();
-      return displayChatMessage(messages);
+      return displayChatMessages(messages);
     }
   });
   $('#messageInput').keypress(function(e) {
@@ -48,18 +48,26 @@ $(document).ready(function() {
         return 0;
       }
     });
-    return displayChatMessage(messages);
+    return displayChatMessages(messages);
   });
-  return displayChatMessage = function(messages) {
+  return displayChatMessages = function(messages) {
     $('#messagesDiv').text('');
-    messages.forEach(function(message) {
-      var name;
+    messages.forEach(function(message, index) {
+      var messageDiv, name;
       if (message.user.fullName === user.fullName) {
         name = 'You';
       } else {
         name = message.user.fullName;
       }
-      return $('<div/>').text(message.content).prepend($('<em/>').text(name + ": ")).prepend($('<time/>').attr('datetime', message.timestamp.toISOString()).text(message.timestamp.toTimeString()).addClass('timeago')).appendTo($('#messagesDiv'));
+      $('<div/>').attr('id', "message" + index).appendTo($('#messagesDiv'));
+      messageDiv = $("#message" + index);
+      messageDiv.addClass('message');
+      if (name === 'You') {
+        messageDiv.addClass('you');
+      }
+      messageDiv.text(message.content + " ");
+      messageDiv.prepend($('<em/>').text(name + ": "));
+      return messageDiv.append($('<time/>').attr('datetime', message.timestamp.toISOString()).text(message.timestamp.toTimeString()).addClass('timeago'));
     });
     return $("time.timeago").timeago();
   };
